@@ -301,3 +301,10 @@ tbody tr:hover {
         margin: 10px auto;
     }
 }
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+#dataTable {
+    min-width: 600px; /* atau sesuai kebutuhan */
+}
