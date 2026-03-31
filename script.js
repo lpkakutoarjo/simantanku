@@ -108,42 +108,49 @@ function populateFilters() {
     const filterTahun = document.getElementById('filter-tahun');
     const filterBulan = document.getElementById('filter-bulan');
     
-    // Reset option untuk mencegah duplikasi jika diload ulang
-    filterTahun.innerHTML = '<option value="Semua">Semua Tahun</option>';
+    // 1. Reset options
     filterBulan.innerHTML = '<option value="Semua">Semua Bulan</option>';
     
     const years = new Set();
     const months = new Set();
 
     allBudgetedData.forEach(row => {
-        if(row.Tahun) years.add(row.Tahun);
+        if(row.Tahun) years.add(String(row.Tahun));
         if(row.Bulan) months.add(row.Bulan);
     });
 
-    Array.from(years).sort().reverse().forEach(year => {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        filterTahun.appendChild(option);
+    // 2. Isi Dropdown Tahun
+    Array.from(years).sort((a, b) => b - a).forEach(year => {
+        filterTahun.add(new Option(year, year));
     });
 
+    // 3. Isi Dropdown Bulan
     const monthOrder = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    
     Array.from(months)
         .sort((a, b) => monthOrder.indexOf(a) - monthOrder.indexOf(b))
         .forEach(month => {
-            const option = document.createElement('option');
-            option.value = month;
-            option.textContent = month;
-            filterBulan.appendChild(option);
-    });
+            filterBulan.add(new Option(month, month));
+        });
 
-    // Mencegah multiple event listener
-    filterTahun.replaceWith(filterTahun.cloneNode(true));
-    filterBulan.replaceWith(filterBulan.cloneNode(true));
-    
-    document.getElementById('filter-tahun').addEventListener('change', applyFilters);
-    document.getElementById('filter-bulan').addEventListener('change', applyFilters);
+    // 4. Set Default Awal (Saat aplikasi pertama kali dibuka)
+    const now = new Date();
+    const currentMonthLabel = monthOrder[now.getMonth()];
+    const currentYearLabel = now.getFullYear().toString();
+
+    if (years.has(currentYearLabel)) filterTahun.value = currentYearLabel;
+    if (months.has(currentMonthLabel)) filterBulan.value = currentMonthLabel;
+
+    // 5. EVENT LISTENER DENGAN LOGIKA OTOMATIS
+    filterTahun.onchange = function() {
+        // SETIAP KALI TAHUN DIGANTI -> BULAN OTOMATIS KE "Semua"
+        filterBulan.value = "Semua"; 
+        applyFilters();
+    };
+
+    filterBulan.onchange = applyFilters;
+
+    // Jalankan filter pertama kali
+    applyFilters();
 }
 
 // Logika Filter Data
@@ -284,17 +291,24 @@ function renderCharts(filteredData) {
     const ctxTrend = document.getElementById('trendChart').getContext('2d');
     const ctxPie = document.getElementById('pieChart').getContext('2d');
 
-    // Hancurkan chart sebelumnya agar tidak tumpang tindih saat data berubah
     if (trendChartInstance) trendChartInstance.destroy();
     if (pieChartInstance) pieChartInstance.destroy();
 
-    // --- 1. LOGIKA LINE CHART (TREN BULANAN) ---
+    // 1. Ambil tahun yang sedang dipilih
+    const selectedTahun = document.getElementById('filter-tahun').value;
+
+    // --- LOGIKA LINE CHART (TREN TAHUNAN RESPONSIF) ---
     const monthOrder = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     
-    // Hitung total realisasi per bulan dari data yang sudah difilter
-    const monthlyValues = monthOrder.map(m => {
-        return filteredData
-            .filter(d => d.Bulan === m)
+    // Pastikan kita memfilter allBudgetedData berdasarkan tahun yang aktif sebelum di-map
+    const yearlyTrendData = monthOrder.map(m => {
+        return allBudgetedData
+            .filter(d => {
+                // Konversi ke string untuk perbandingan yang aman
+                const matchTahun = (selectedTahun === "Semua" || String(d.Tahun) === String(selectedTahun));
+                const matchBulan = (String(d.Bulan) === m);
+                return matchTahun && matchBulan;
+            })
             .reduce((sum, d) => sum + (Number(d.Realisasi) || 0), 0);
     });
 
@@ -303,32 +317,52 @@ function renderCharts(filteredData) {
         data: {
             labels: monthOrder,
             datasets: [{
-                label: 'Realisasi (Rp)',
-                data: monthlyValues,
-                borderColor: '#4e73df',
-                backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                label: `Realisasi ${selectedTahun === "Semua" ? "Seluruh Tahun" : selectedTahun} (Rp)`,
+                data: yearlyTrendData,
+                borderColor: '#1e3a8a',
+                backgroundColor: 'rgba(30, 58, 138, 0.1)',
                 fill: true,
                 tension: 0.4,
-                pointRadius: 5,
-                pointBackgroundColor: '#4e73df'
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                borderWidth: 3
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            },
             plugins: {
-                title: { display: true, text: 'Grafik Serapan Anggaran per Bulan', font: { size: 16 } }
+                title: { 
+                    display: true, 
+                    text: `Tren Serapan Anggaran Tahun ${selectedTahun}`, 
+                    font: { size: 16, weight: 'bold' },
+                    padding: { bottom: 20 }
+                },
+                legend: { display: false } // Sembunyikan legend agar lebih bersih
             },
             scales: {
-                y: { beginAtZero: true, ticks: { callback: value => formatRp(value) } }
+                y: { 
+                    beginAtZero: true, 
+                    ticks: { 
+                        callback: value => formatRp(value),
+                        maxTicksLimit: 5
+                    },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                },
+                x: {
+                    grid: { display: false }
+                }
             }
         }
     });
 
-    // --- 2. LOGIKA PIE/DOUGHNUT CHART (KOMPOSISI PROGRAM) ---
-    // Mengelompokkan realisasi berdasarkan Jenis Program dari data yang difilter
+    // --- LOGIKA PIE CHART (MENGIKUTI FILTER BULAN) ---
     const programMap = filteredData.reduce((acc, curr) => {
-        const progName = curr['Jenis Program'];
+        const progName = curr['Jenis Program'] || 'Lainnya';
         const realisasi = Number(curr.Realisasi) || 0;
         if (realisasi > 0) {
             acc[progName] = (acc[progName] || 0) + realisasi;
@@ -345,17 +379,27 @@ function renderCharts(filteredData) {
             labels: pieLabels,
             datasets: [{
                 data: pieValues,
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b', '#5a5c69', '#f39c12'],
-                hoverOffset: 10
+                backgroundColor: ['#1e3a8a', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6b7280'],
+                borderWidth: 2,
+                hoverOffset: 15
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                title: { display: true, text: 'Komposisi Realisasi Program', font: { size: 16 } },
-                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 15 } }
-            }
+                title: { 
+                    display: true, 
+                    text: 'Komposisi Program', 
+                    font: { size: 16, weight: 'bold' },
+                    padding: { bottom: 10 }
+                },
+                legend: { 
+                    position: 'bottom', 
+                    labels: { boxWidth: 10, padding: 15, font: { size: 11 } } 
+                }
+            },
+            cutout: '70%' // Membuat doughnut lebih tipis agar elegan
         }
     });
 }
