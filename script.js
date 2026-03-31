@@ -422,7 +422,7 @@ function updateRealtimeDate() {
     const formattedDate = today.toLocaleDateString('id-ID', options);
     
     // Menambahkan teks "Per Tanggal" di depannya
-    document.getElementById('current-date').innerText = "Per Tanggal " + formattedDate;
+    document.getElementById('current-date').innerText = formattedDate;
 }
 
 // Jalankan fungsi saat halaman dimuat
