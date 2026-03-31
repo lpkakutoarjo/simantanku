@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kinerja Anggaran | LPKA Kutoarjo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+</head>
+<body>
+
+<header class="main-header">
+    <div class="header-overlay"></div>
+    
+    <div class="container">
+        <div class="header-wrapper">
+            <div class="brand-section">
+                <div class="logo-accent"></div>
+                <div class="logo-area">
+                    <h1>SI-PALU</h1>
+                    <div class="divider"></div>
+                    <p>Sistem Informasi Publikasi Anggaran <span>LPKA Klas I Kutoarjo</span></p>
+                </div>
+            </div>
+            
+            <div class="status-section">
+                <div id="date-display" class="date-badge-glass">
+                    <i class="far fa-calendar-alt"></i>
+                    <span id="current-date">Memuat tanggal...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <main class="container">
+        
+        <section class="filter-section">
+            <div class="filter-wrapper">
+                <div class="filter-group">
+                    <label for="filter-tahun">Tahun Anggaran</label>
+                    <div class="select-wrapper">
+                        <select id="filter-tahun">
+                            <option value="Semua">Semua Tahun</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-bulan">Bulan</label>
+                    <div class="select-wrapper">
+                        <select id="filter-bulan">
+                            <option value="Semua">Semua Bulan</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cards-section">
+            <div class="card card-pagu">
+                <div class="card-icon">💰</div>
+                <div class="card-info">
+                    <h4>Total Pagu</h4>
+                    <h2 id="total-pagu" style="font-size: 1.2rem;">Rp 0</h2>
+                </div>
+            </div>
+            <div class="card card-realisasi">
+                <div class="card-icon">📈</div>
+                <div class="card-info">
+                    <h4>Total Realisasi</h4>
+                    <h2 id="total-realisasi" style="font-size: 1.2rem;">Rp 0</h2>
+                </div>
+            </div>
+            <div class="card card-persentase">
+                <div class="card-icon">📊</div>
+                <div class="card-info">
+                    <h4>Persentase</h4>
+                    <h2 id="total-persentase" style="font-size: 1.2rem;">0%</h2>
+                </div>
+            </div>
+            <div class="card card-sisa">
+                <div class="card-icon">💼</div>
+                <div class="card-info">
+                    <h4>Sisa Anggaran</h4>
+                    <h2 id="total-sisa" style="font-size: 1.2rem;">Rp 0</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="chart-section" style="display: flex; gap: 20px; margin-bottom: 2rem; flex-wrap: wrap;">
+            <div class="chart-container" style="flex: 2; min-width: 300px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <canvas id="trendChart"></canvas>
+            </div>
+            <div class="chart-container" style="flex: 1; min-width: 300px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <canvas id="pieChart"></canvas>
+            </div>
+        </section>
+
+        <section class="table-section">
+            <div class="table-header">
+                <h3>Rincian Program Anggaran</h3>
+            </div>
+            <div class="table-responsive">
+                <table id="dataTable">
+                    <thead>
+<tr>
+        <th style="width: 35%; text-align: left;">Jenis Program</th>
+        
+        <th style="width: 20%;">Pagu</th>
+        <th style="width: 20%;">Realisasi</th>
+        <th style="width: 5%;">%</th>
+        <th style="width: 20%;">Sisa Anggaran</th>
+    </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td colspan="5" class="state-message">
+                                <div class="loader"></div>
+                                <p>Menarik data dari server...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot id="table-foot">
+                        </tfoot>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

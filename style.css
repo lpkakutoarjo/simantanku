@@ -1,0 +1,303 @@
+/* --- 1. CSS VARIABLES & RESET --- */
+:root {
+    --primary: #1e3a8a; /* Deep Blue */
+    --primary-dark: #0d3b66;
+    --primary-light: #3b82f6;
+    --accent-orange: #f39c12; /* Warna CERIA */
+    --bg-main: #f4f7f6;
+    --surface: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --text-white: #ffffff;
+    --border: #e5e7eb;
+    
+    /* Card Gradients */
+    --grad-blue: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    --grad-green: linear-gradient(135deg, #10b981, #047857);
+    --grad-orange: linear-gradient(135deg, #f59e0b, #b45309);
+    --grad-red: linear-gradient(135deg, #ef4444, #b91c1c);
+
+    /* Glass Effect */
+    --glass-white: rgba(255, 255, 255, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+/* --- 2. MAIN HEADER (ELEGAN & KREATIF) --- */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    position: relative;
+    padding: 45px 0;
+    color: var(--text-white);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Efek Cahaya Dekoratif */
+.header-overlay {
+    position: absolute;
+    top: -50%;
+    left: -10%;
+    width: 45%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(243, 156, 18, 0.1) 0%, transparent 70%);
+    transform: rotate(-15deg);
+    pointer-events: none;
+}
+
+.header-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+}
+
+/* Branding Area */
+.brand-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-accent {
+    width: 6px;
+    height: 65px;
+    background: var(--accent-orange);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.5);
+}
+
+.logo-area h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: 2px;
+    line-height: 1;
+    background: linear-gradient(to bottom, #ffffff, #d1d5db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.divider {
+    height: 2px;
+    width: 50px;
+    background: var(--accent-orange);
+    margin: 10px 0;
+}
+
+.logo-area p {
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.logo-area p span {
+    font-weight: 700;
+    color: var(--accent-orange);
+}
+
+/* Date Badge (Glassmorphism) */
+.date-badge-glass {
+    background: var(--glass-white);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 12px 25px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.date-badge-glass:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: var(--accent-orange);
+}
+
+.date-badge-glass i {
+    color: var(--accent-orange);
+    font-size: 1.1rem;
+}
+
+/* --- 3. MAIN CONTAINER --- */
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+/* --- 4. FILTER SECTION --- */
+.filter-section {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid var(--border);
+}
+
+.filter-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.select-wrapper select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--text-main);
+    background-color: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+/* --- 5. CARDS SECTION --- */
+.cards-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.card {
+    border-radius: 16px;
+    padding: 1.5rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-icon {
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.card-info h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.card-pagu { background: var(--grad-blue); }
+.card-realisasi { background: var(--grad-green); }
+.card-persentase { background: var(--grad-orange); }
+.card-sisa { background: var(--grad-red); }
+
+/* --- 6. TABLE SECTION --- */
+.table-section {
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 1.2rem 1.5rem;
+    text-align: right;
+}
+
+th:first-child, td:first-child {
+    text-align: left;
+}
+
+tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* --- 7. RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 30px 0;
+    }
+
+    .header-wrapper {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+    }
+
+    .brand-section {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .logo-accent {
+        width: 60px;
+        height: 4px;
+    }
+
+    .logo-area h1 {
+        font-size: 1.8rem;
+    }
+
+    .divider {
+        margin: 10px auto;
+    }
+}
