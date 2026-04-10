@@ -113,20 +113,29 @@ body {
     color: var(--accent-orange);
 }
 
+/* --- PERUBAHAN BARU: Status Section --- */
+/* Mengatur agar Database di Atas Tanggal */
+.status-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Rata kanan di PC */
+    gap: 8px;
+}
+
 /* Date Badge (Glassmorphism) */
 .date-badge-glass {
     background: var(--glass-white);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    padding: 12px 25px;
+    padding: 8px 20px;
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-size: 0.85rem;
     font-weight: 600;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
 }
 
@@ -139,6 +148,14 @@ body {
 .date-badge-glass i {
     color: var(--accent-orange);
     font-size: 1.1rem;
+}
+
+/* Styling Khusus Indikator Database (Minimalis) */
+.badge-sm {
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    gap: 8px;
 }
 
 /* --- 3. MAIN CONTAINER --- */
@@ -271,7 +288,88 @@ tbody tr:hover {
     background-color: #f8fafc;
 }
 
-/* --- 7. RESPONSIVE DESIGN --- */
+/* --- 7. INDIKATOR KONEKSI DB --- */
+.status-dot {
+    width: 8px; 
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.db-status-loading .status-dot { background-color: #f1c40f; animation: blink 1s infinite; }
+.db-status-success .status-dot { background-color: #2ecc71; box-shadow: 0 0 8px #2ecc71; }
+.db-status-error .status-dot { background-color: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
+
+@keyframes blink { 50% { opacity: 0.5; } }
+
+/* --- 8. TABEL & ACCORDION DROPDOWN --- */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+th.prominent-header {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    padding: 1.2rem;
+    white-space: nowrap;
+}
+
+.month-group-row {
+    background-color: #e0f2fe;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-bottom: 2px solid #bae6fd;
+}
+.month-group-row:hover {
+    background-color: #bae6fd;
+}
+.month-group-row td {
+    color: var(--primary-dark);
+}
+
+.toggle-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+.month-group-row.open .toggle-icon {
+    transform: rotate(90deg);
+}
+
+.detail-row {
+    display: none;
+    background-color: #f8fafc;
+}
+.detail-row td {
+    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.show-detail {
+    display: table-row;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.badge-percent {
+    background: #38bdf8;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 9. RESPONSIVITAS EKSTRA --- */
 @media (max-width: 768px) {
     .main-header {
         padding: 30px 0;
@@ -300,11 +398,19 @@ tbody tr:hover {
     .divider {
         margin: 10px auto;
     }
-}
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-}
-#dataTable {
-    min-width: 600px; /* atau sesuai kebutuhan */
+    
+    .cards-section {
+        grid-template-columns: 1fr;
+    }
+    
+    /* PERUBAHAN: Ratakan posisi indikator di HP ke tengah */
+    .status-section {
+        align-items: center;
+        gap: 10px;
+    }
+
+    th.prominent-header {
+        font-size: 0.8rem;
+        padding: 0.8rem;
+    }
 }
