@@ -6,8 +6,28 @@
     <title>SI-MANTANKU | LPKA Kutoarjo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
+    <link id="dynamic-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-15 -15 150 150'%3E%3Cg%3E%3Cpath d='M60,5 L110,33 L110,87 L60,115 L10,87 L10,33 Z' fill='none' stroke='%23d97706' stroke-width='10' stroke-linejoin='round'/%3E%3Crect x='34' y='65' width='12' height='25' rx='4' fill='%23be185d' /%3E%3Crect x='54' y='45' width='12' height='45' rx='4' fill='%230ea5e9' /%3E%3Crect x='74' y='25' width='12' height='65' rx='4' fill='%2394a3b8' /%3E%3Ccircle cx='40' cy='55' r='7' fill='%23be185d' /%3E%3Ccircle cx='60' cy='35' r='9' fill='%230ea5e9' /%3E%3Ccircle cx='80' cy='15' r='7' fill='%23333333' /%3E%3C/g%3E%3C/svg%3E">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const favicon = document.getElementById("dynamic-favicon");
+            
+            const svgNormal = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-15 -15 150 150'%3E%3Cg%3E%3Cpath d='M60,5 L110,33 L110,87 L60,115 L10,87 L10,33 Z' fill='none' stroke='%23d97706' stroke-width='10' stroke-linejoin='round'/%3E%3Crect x='34' y='65' width='12' height='25' rx='4' fill='%23be185d' /%3E%3Crect x='54' y='45' width='12' height='45' rx='4' fill='%230ea5e9' /%3E%3Crect x='74' y='25' width='12' height='65' rx='4' fill='%2394a3b8' /%3E%3Ccircle cx='40' cy='55' r='7' fill='%23be185d' /%3E%3Ccircle cx='60' cy='35' r='9' fill='%230ea5e9' /%3E%3Ccircle cx='80' cy='15' r='7' fill='%23333333' /%3E%3C/g%3E%3C/svg%3E";
+            
+            const svgBeat = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-15 -15 150 150'%3E%3Cg style='transform: scale(1.15) rotate(5deg); transform-origin: 60px 60px;'%3E%3Cpath d='M60,5 L110,33 L110,87 L60,115 L10,87 L10,33 Z' fill='none' stroke='%23d97706' stroke-width='10' stroke-linejoin='round'/%3E%3Crect x='34' y='65' width='12' height='25' rx='4' fill='%23be185d' /%3E%3Crect x='54' y='45' width='12' height='45' rx='4' fill='%230ea5e9' /%3E%3Crect x='74' y='25' width='12' height='65' rx='4' fill='%2394a3b8' /%3E%3Ccircle cx='40' cy='55' r='7' fill='%23be185d' /%3E%3Ccircle cx='60' cy='35' r='9' fill='%230ea5e9' /%3E%3Ccircle cx='80' cy='15' r='7' fill='%23333333' /%3E%3C/g%3E%3C/svg%3E";
+
+            setInterval(() => {
+                favicon.href = svgBeat; 
+                setTimeout(() => {
+                    favicon.href = svgNormal;
+                }, 500);
+            }, 5000);
+        });
+    </script>
 </head>
 <body>
 
@@ -20,98 +40,31 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-15 -15 150 150" width="105" height="105" class="logo-simantanku-anim">
                     <defs>
                         <style>
-                            /* 1. Efek Interaktif (Diperbesar saat Hover) */
-                            .logo-simantanku-anim {
-                                transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s ease;
-                                filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.15));
-                                cursor: pointer;
-                            }
-                            .logo-simantanku-anim:hover {
-                                transform: scale(1.15) rotate(5deg);
-                                /* Shadow hover disesuaikan menjadi warna emas terang */
-                                filter: drop-shadow(0px 10px 20px rgba(245, 158, 11, 0.6));
-                            }
-                
-                            /* 2. Animasi Garis Heksagon (Menggambar sendiri lalu berdenyut) */
-                            .hex-frame {
-                                stroke-dasharray: 400;
-                                stroke-dashoffset: 400;
-                                animation: drawHex 2s ease-in-out forwards, pulseGlow 3s infinite alternate 2.5s;
-                                transform-origin: center;
-                            }
-                
-                            /* 3. Animasi Batang (Tumbuh perlahan dari bawah) */
-                            .bar {
-                                transform-origin: bottom;
-                                animation: growUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-                                transform: scaleY(0);
-                            }
-                            .bar-1 { animation-delay: 0.5s; }
-                            .bar-2 { animation-delay: 0.7s; }
-                            .bar-3 { animation-delay: 0.9s; }
-                
-                            /* 4. Animasi Lingkaran/Daun (Mumbul lalu Mengambang) */
-                            .circle-node {
-                                opacity: 0;
-                                animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, floatNode 3s ease-in-out infinite;
-                                transform-origin: center;
-                            }
-                            .circle-1 { animation-delay: 1.0s, 1.8s; }
-                            .circle-2 { animation-delay: 1.2s, 2.0s; }
-                            .circle-3 { animation-delay: 1.4s, 2.2s; }
-                
-                            /* --- KEYFRAMES --- */
-                            @keyframes drawHex {
-                                to { stroke-dashoffset: 0; }
-                            }
-                            @keyframes pulseGlow {
-                                /* Efek glow disesuaikan dengan warna emas agar kontras dengan biru */
-                                0% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.3)); }
-                                100% { filter: drop-shadow(0 0 15px rgba(253, 224, 71, 0.8)); }
-                            }
-                            @keyframes growUp {
-                                from { transform: scaleY(0); }
-                                to { transform: scaleY(1); }
-                            }
-                            @keyframes popIn {
-                                from { opacity: 0; transform: translateY(15px) scale(0); }
-                                to { opacity: 1; transform: translateY(0) scale(1); }
-                            }
-                            @keyframes floatNode {
-                                0%, 100% { transform: translateY(0); }
-                                50% { transform: translateY(-5px); }
-                            }
+                            .logo-simantanku-anim { transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.5s ease; filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.15)); cursor: pointer; animation: beatEvery5s 5s infinite; }
+                            .logo-simantanku-anim:hover { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0px 10px 20px rgba(245, 158, 11, 0.6)); animation-play-state: paused; }
+                            @keyframes beatEvery5s { 0%, 85%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0px 5px 10px rgba(0, 0, 0, 0.15)); } 90% { transform: scale(1.15) rotate(5deg); filter: drop-shadow(0px 10px 20px rgba(245, 158, 11, 0.6)); } 95% { transform: scale(1.05) rotate(-2deg); } }
+                            .hex-frame { stroke-dasharray: 400; stroke-dashoffset: 400; animation: drawHex 2s ease-in-out forwards, pulseGlow 3s infinite alternate 2.5s; transform-origin: center; }
+                            .bar { transform-origin: bottom; animation: growUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; transform: scaleY(0); }
+                            .bar-1 { animation-delay: 0.5s; } .bar-2 { animation-delay: 0.7s; } .bar-3 { animation-delay: 0.9s; }
+                            .circle-node { opacity: 0; animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, floatNode 3s ease-in-out infinite; transform-origin: center; }
+                            .circle-1 { animation-delay: 1.0s, 1.8s; } .circle-2 { animation-delay: 1.2s, 2.0s; } .circle-3 { animation-delay: 1.4s, 2.2s; }
+                            @keyframes drawHex { to { stroke-dashoffset: 0; } }
+                            @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.3)); } 100% { filter: drop-shadow(0 0 15px rgba(253, 224, 71, 0.8)); } }
+                            @keyframes growUp { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+                            @keyframes popIn { from { opacity: 0; transform: translateY(15px) scale(0); } to { opacity: 1; transform: translateY(0) scale(1); } }
+                            @keyframes floatNode { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
                         </style>
-                        
-                        <linearGradient id="gradGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#fde047" />
-                            <stop offset="100%" stop-color="#d97706" />
-                        </linearGradient>
-                        
-                        <linearGradient id="gradFuchsia" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#f472b6" />
-                            <stop offset="100%" stop-color="#be185d" />
-                        </linearGradient>
-                
-                        <linearGradient id="gradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#22d3ee" />
-                            <stop offset="100%" stop-color="#0f766e" />
-                        </linearGradient>
-                
-                        <linearGradient id="gradWhite" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#ffffff" />
-                            <stop offset="100%" stop-color="#94a3b8" />
-                        </linearGradient>
+                        <linearGradient id="gradGold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fde047" /><stop offset="100%" stop-color="#d97706" /></linearGradient>
+                        <linearGradient id="gradFuchsia" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f472b6" /><stop offset="100%" stop-color="#be185d" /></linearGradient>
+                        <linearGradient id="gradCyan" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#22d3ee" /><stop offset="100%" stop-color="#0f766e" /></linearGradient>
+                        <linearGradient id="gradWhite" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff" /><stop offset="100%" stop-color="#94a3b8" /></linearGradient>
                     </defs>
-                
                     <path class="hex-frame" d="M60,5 L110,33 L110,87 L60,115 L10,87 L10,33 Z" fill="none" stroke="url(#gradGold)" stroke-width="8" stroke-linejoin="round"/>
-                    
                     <g transform="translate(0, 0)">
                         <rect class="bar bar-1" x="34" y="65" width="12" height="25" rx="4" fill="url(#gradFuchsia)" />
                         <rect class="bar bar-2" x="54" y="45" width="12" height="45" rx="4" fill="url(#gradCyan)" />
                         <rect class="bar bar-3" x="74" y="25" width="12" height="65" rx="4" fill="url(#gradWhite)" />
                     </g>
-                    
                     <circle class="circle-node circle-1" cx="40" cy="55" r="7" fill="#be185d" />
                     <circle class="circle-node circle-2" cx="60" cy="35" r="9" fill="#0ea5e9" />
                     <circle class="circle-node circle-3" cx="80" cy="15" r="7" fill="#ffffff" />
@@ -120,16 +73,21 @@
                 <div class="logo-area">
                     <h1>SI-MANTANKU</h1>
                     <div class="divider"></div>
-                    <p>Sistem Informasi Pemantauan Anggaran Terintegrasi <span>LPKA Kutoarjo</span></p>
+                    <p>Sistem Informasi Pemantauan Anggaran Terintegrasi <span>LPKA Klas I Kutoarjo</span></p>
                 </div>
             </div>
             
             <div class="status-section">
+                <div id="db-status" class="date-badge-glass badge-sm db-status-loading">
+                    <span class="status-dot"></span>
+                    <span id="status-text">Cek Koneksi...</span>
+                </div>
                 <div id="date-display" class="date-badge-glass">
                     <i class="far fa-calendar-alt"></i>
                     <span id="current-date">Memuat tanggal...</span>
                 </div>
             </div>
+            
         </div>
     </div>
 </header>
@@ -180,7 +138,7 @@
                 </div>
             </div>
             <div class="card card-sisa">
-                <div class="card-icon">💼</div>
+                <div class="card-icon">📉</div>
                 <div class="card-info">
                     <h4>Sisa Anggaran</h4>
                     <h2 id="total-sisa" style="font-size: 1.2rem;">Rp 0</h2>
@@ -198,23 +156,17 @@
         </section>
 
         <section class="table-section">
-            <div class="table-header">
-                <h3>Rincian Program Anggaran</h3>
+            <div class="table-header" style="padding: 1.5rem; background: white; border-bottom: 1px solid var(--border);">
+                <h3 style="margin: 0; color: var(--primary-dark);">Rincian Program Anggaran</h3>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Klik pada baris Bulan untuk melihat rincian Kegiatan.</p>
             </div>
             <div class="table-responsive">
                 <table id="dataTable">
                     <thead>
-                    <tr>
-                        <th style="width: 35%; text-align: left;">Kegiatan</th>
-                        <th style="width: 20%;">Pagu</th>
-                        <th style="width: 20%;">Realisasi</th>
-                        <th style="width: 5%;">%</th>
-                        <th style="width: 20%;">Sisa Anggaran</th>
-                    </tr>
                     </thead>
                     <tbody id="table-body">
                         <tr>
-                            <td colspan="5" class="state-message">
+                            <td colspan="5" class="state-message" style="text-align: center; padding: 2rem;">
                                 <div class="loader"></div>
                                 <p>Menarik data dari server...</p>
                             </td>
