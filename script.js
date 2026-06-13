@@ -291,7 +291,10 @@ function renderDashboard(data) {
     tfoot.innerHTML = `
         <tr style="background: var(--primary-dark); color: white; font-weight: bold;">
             <td style="text-align: left; padding-left: 15px;"></td>
-    
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
     `;
 
