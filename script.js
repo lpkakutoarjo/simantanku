@@ -289,13 +289,6 @@ function renderDashboard(data) {
     let persentaseTotal = totalPagu > 0 ? ((totalRealisasi / totalPagu) * 100) : 0;
     
     tfoot.innerHTML = `
-        <tr style="background: var(--primary-dark); color: white; font-weight: bold;">
-            <td style="text-align: left; padding-left: 15px;"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
     `;
 
     animateValue('total-pagu', 0, totalPagu, 1000);
