@@ -286,17 +286,117 @@ function renderDashboard(data) {
         });
     });
 
-    let persentaseTotal = totalPagu > 0 ? ((totalRealisasi / totalPagu) * 100) : 0;
-    
-    tfoot.innerHTML = `
-    `;
+// =========================================
+// PERHITUNGAN CARD
+// =========================================
 
-    animateValue('total-pagu', 0, totalPagu, 1000);
-    animateValue('total-realisasi', 0, totalRealisasi, 1000);
-    animateValue('total-persentase', 0, persentaseTotal, 1000, false, true);
-    animateValue('total-sisa', 0, totalSisa, 1000);
+const filterTahun = document.getElementById("filter-tahun").value;
+const filterBulan = document.getElementById("filter-bulan").value;
 
-    renderCharts(data);
+let cardPagu = totalPagu;
+let cardRealisasi = totalRealisasi;
+let cardSisa = totalSisa;
+
+// Jika filter Bulan = Semua
+if (filterBulan === "Semua") {
+
+    cardPagu = 0;
+    cardRealisasi = 0;
+    cardSisa = 0;
+
+    const monthMap = {
+        Januari:1,
+        Februari:2,
+        Maret:3,
+        April:4,
+        Mei:5,
+        Juni:6,
+        Juli:7,
+        Agustus:8,
+        September:9,
+        Oktober:10,
+        November:11,
+        Desember:12
+    };
+
+    if (filterTahun === "Semua") {
+
+        // ==========================
+        // Semua Tahun
+        // ==========================
+        sortedYears.forEach(yearGroup=>{
+
+            let lastMonth = null;
+
+            Object.values(yearGroup.months).forEach(month=>{
+
+                if(
+                    !lastMonth ||
+                    monthMap[month.bulan] > monthMap[lastMonth.bulan]
+                ){
+                    lastMonth = month;
+                }
+
+            });
+
+            if(lastMonth){
+                cardPagu += lastMonth.subPagu;
+                cardRealisasi += lastMonth.subReal;
+                cardSisa += (lastMonth.subPagu-lastMonth.subReal);
+            }
+
+        });
+
+    }else{
+
+        // ==========================
+        // Satu Tahun
+        // ==========================
+
+        const yearGroup = groupedByYear[filterTahun];
+
+        if(yearGroup){
+
+            let lastMonth = null;
+
+            Object.values(yearGroup.months).forEach(month=>{
+
+                if(
+                    !lastMonth ||
+                    monthMap[month.bulan] > monthMap[lastMonth.bulan]
+                ){
+                    lastMonth = month;
+                }
+
+            });
+
+            if(lastMonth){
+
+                cardPagu = lastMonth.subPagu;
+                cardRealisasi = lastMonth.subReal;
+                cardSisa = lastMonth.subPagu-lastMonth.subReal;
+
+            }
+
+        }
+
+    }
+
+}
+
+const cardPersentase =
+cardPagu>0
+? (cardRealisasi/cardPagu)*100
+:0;
+
+tfoot.innerHTML = ``;
+
+animateValue('total-pagu',0,cardPagu,1000);
+animateValue('total-realisasi',0,cardRealisasi,1000);
+animateValue('total-persentase',0,cardPersentase,1000,false,true);
+animateValue('total-sisa',0,cardSisa,1000);
+
+renderCharts(data);
 }
 
 function renderCharts(filteredData) {
@@ -306,9 +406,34 @@ function renderCharts(filteredData) {
     if (pieChartInstance) pieChartInstance.destroy();
 
     const monthOrder = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    const monthlyValues = monthOrder.map(m => {
-        return filteredData.filter(d => d.Bulan === m).reduce((sum, d) => sum + (Number(d.Realisasi) || 0), 0);
-    });
+const selectedTahun = document.getElementById("filter-tahun").value;
+const selectedBulan = document.getElementById("filter-bulan").value;
+
+// Data sesuai tahun
+let chartData = allBudgetedData;
+
+if (selectedTahun !== "Semua") {
+    chartData = chartData.filter(d => String(d.Tahun) === selectedTahun);
+}
+
+// Jika memilih bulan tertentu,
+// tampilkan bulan Januari sampai bulan yang dipilih
+let lastMonthIndex = monthOrder.length - 1;
+
+if (selectedBulan !== "Semua") {
+    lastMonthIndex = monthOrder.indexOf(selectedBulan);
+}
+
+const monthlyValues = monthOrder.map((bulan, index) => {
+
+    // Bulan setelah bulan yang dipilih tidak ditampilkan
+    if (index > lastMonthIndex) return null;
+
+    return chartData
+        .filter(d => d.Bulan === bulan)
+        .reduce((sum, d) => sum + (Number(d.Realisasi) || 0), 0);
+
+});
 
     trendChartInstance = new Chart(ctxTrend, {
         type: 'line',
